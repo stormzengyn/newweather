@@ -110,14 +110,21 @@ public class ChooseAreaFragment extends Fragment {
                     queryCounties();
                 } else if (currentLevel == LEVEL_COUNTY) {
                     String weatherId = countyList.get(position).getWeatherId();
-                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
-                    Log.e("ChooseAreaFragment", "go");
-                    //intent.putExtra()用于在intent进行Activity跳转时从这个Activity传递消息到另一个Activity
-                    //putExtra("A",B)中，AB为键值对，第一个参数为键名，第二个参数为键对应的值。
-                    //如果想取出Intent对象中的这些值，需要在你的另一个Activity中用getXXXXXExtra方法，注意需要使用对应类型的方法，参数为键名
-                    intent.putExtra("weather_id", weatherId);
-                    startActivity(intent);
-                    getActivity().finish();
+                    if (getActivity() instanceof MainActivity) {
+                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                        Log.e("ChooseAreaFragment", "go");
+                        //intent.putExtra()用于在intent进行Activity跳转时从这个Activity传递消息到另一个Activity
+                        //putExtra("A",B)中，AB为键值对，第一个参数为键名，第二个参数为键对应的值。
+                        //如果想取出Intent对象中的这些值，需要在你的另一个Activity中用getXXXXXExtra方法，注意需要使用对应类型的方法，参数为键名
+                        intent.putExtra("weather_id", weatherId);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                    else if (getActivity() instanceof WeatherActivity) {
+                        WeatherActivity activity = (WeatherActivity) getActivity();
+                        activity.drawerLayout.closeDrawers();
+                        activity.requestWeather(weatherId);
+                    }
                 }
             }
         });

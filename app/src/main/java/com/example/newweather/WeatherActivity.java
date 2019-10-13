@@ -17,6 +17,8 @@ import com.example.newweather.util.Utility;
 import java.io.IOException;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -40,6 +42,10 @@ public class WeatherActivity extends AppCompatActivity {
 
     private Button refreshWeather;
 
+    public DrawerLayout drawerLayout;
+
+    private  Button switchCityButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,8 @@ public class WeatherActivity extends AppCompatActivity {
         windscText = (TextView) findViewById(R.id.windsc_text);
         winddirText = (TextView) findViewById(R.id.winddir_text);
         refreshWeather = (Button) findViewById(R.id.refresh_weather);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        switchCityButton = (Button) findViewById(R.id.switch_city);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
         final String weatherId;
@@ -76,14 +84,14 @@ public class WeatherActivity extends AppCompatActivity {
         refreshWeather.setOnClickListener(new View.OnClickListener() {//使用匿名内部类实现监听器
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.refresh_weather:
-                        System.out.println("使用内部类实现点击事件");
-                        requestWeather(weatherId);
-                        break;
-                    default:
-                        break;
-                }
+                requestWeather(weatherId);
+            }
+        });
+
+        switchCityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
 
