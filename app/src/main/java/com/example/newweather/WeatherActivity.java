@@ -1,5 +1,6 @@
 package com.example.newweather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.newweather.gson.Weather;
+import com.example.newweather.service.AutoUpdateService;
 import com.example.newweather.util.HttpUtil;
 import com.example.newweather.util.Utility;
 
@@ -50,6 +52,8 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Android开发中经常会在setContentView(R.layout.XXX); 前设置requestWindowFeature(XXXX)。
+        //意思是需要软件全屏显示、自定义标题（使用按钮等控件）和其他的需求
         setContentView(R.layout.first_layout);
         Log.d("WeatherActivity", "onCreate execute");
         // 初始化各控件
@@ -157,6 +161,8 @@ public class WeatherActivity extends AppCompatActivity {
         windscText.setText(Windsc);
         winddirText.setText(Winddir);
         weatherInfoLayout.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 
 }

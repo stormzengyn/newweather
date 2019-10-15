@@ -112,6 +112,7 @@ public class ChooseAreaFragment extends Fragment {
                     String weatherId = countyList.get(position).getWeatherId();
                     if (getActivity() instanceof MainActivity) {
                         Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                        //Android中提供了Intent机制来协助应用间的交互与通讯，或者采用更准确的说法是，Intent不仅可用于应用程序之间，也可用于应用程序内部的activity, service和broadcast receiver之间的交互
                         Log.e("ChooseAreaFragment", "go");
                         //intent.putExtra()用于在intent进行Activity跳转时从这个Activity传递消息到另一个Activity
                         //putExtra("A",B)中，AB为键值对，第一个参数为键名，第二个参数为键对应的值。
@@ -218,16 +219,16 @@ public class ChooseAreaFragment extends Fragment {
                 String responseText = response.body().string();
                 boolean result = false;
                 if ("province".equals(type)) {
-                    result = Utility.handleProvinceResponse(responseText);
+                    result = Utility.handleProvinceResponse(responseText);//在Utility中将从服务端获取的数据存储到数据库了
                 } else if ("city".equals(type)) {
-                    result = Utility.handleCityResponse(responseText, selectedProvince.getId());
+                    result = Utility.handleCityResponse(responseText, selectedProvince.getId());//Utility.handleCityResponse返回是布尔变量，即true或false
                 } else if ("county".equals(type)) {
                     result = Utility.handleCountyResponse(responseText, selectedCity.getId());
                 }
                 if (result) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
-                        public void run() {
+                        public void run() {// 通过runOnUiThread()方法回到主线程处理逻辑
                             closeProgressDialog();
                             if ("province".equals(type)) {
                                 queryProvinces();
